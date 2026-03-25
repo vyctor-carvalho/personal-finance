@@ -1,4 +1,4 @@
-package com.financas.pessoais.backend.models.enums;
+package com.financas.pessoais.backend.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

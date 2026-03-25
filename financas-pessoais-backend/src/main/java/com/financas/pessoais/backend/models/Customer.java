@@ -1,12 +1,9 @@
 package com.financas.pessoais.backend.models;
 
-import com.financas.pessoais.backend.models.enums.UserState;
-import com.financas.pessoais.backend.models.enums.UserType;
+import com.financas.pessoais.backend.enums.UserState;
+import com.financas.pessoais.backend.enums.UserType;
 import com.financas.pessoais.backend.models.wrappers.LoginData;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity()
-@Table(name = "user")
+@Table(name = "customer")
 @AllArgsConstructor()
 @NoArgsConstructor()
 @Getter()
@@ -25,29 +22,27 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", updatable = false, columnDefinition = "UUID DEFAULT gen_random_uuid()")
+    @Column(name = "id", updatable = false)
     private UUID id;
 
-    @NotBlank
-    @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(45)")
+    @Column(name = "name", nullable = false, length = 45)
     private String name;
 
-    @Column(name = "register_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime registerDate;
+    @Column(name = "register_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime registerDate = LocalDateTime.now();
 
-    @NotNull
-    @Valid
     @Embedded
     private LoginData loginData;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_type", columnDefinition = "VARCHAR(8) DEFAULT 'USER'")
-    private UserType userType;
+    @Column(name = "user_type", length = 8)
+    private UserType userType = UserType.USER;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_state", columnDefinition = "VARCHAR(9) DEFAULT 'ACTIVE'")
-    private UserState userState;
+    @Column(name = "user_state", length = 25)
+    private UserState userState = UserState.ACTIVE;
 
+    public void setPassword(String password) {
+        this.loginData.setPassword(password);
+    }
 }
